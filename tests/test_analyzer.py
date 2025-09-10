@@ -4,6 +4,7 @@ from src.services.analyzer import TextAnalyzer
 
 class TestTextAnalyzer:
     
+    @patch.dict('os.environ', {'DEBUG': 'false'})
     @patch('src.services.analyzer.LLMService')
     def test_analyze_success(self, mock_llm_service):
         # Mock LLM response
@@ -28,6 +29,7 @@ class TestTextAnalyzer:
         assert result["sentiment"] == "positive"
         assert result["keywords"] == ["sample", "test", "text"]
     
+    @patch.dict('os.environ', {'DEBUG': 'false'})
     @patch('src.services.analyzer.LLMService')
     def test_analyze_empty_text(self, mock_llm_service):
         analyzer = TextAnalyzer()
@@ -35,6 +37,7 @@ class TestTextAnalyzer:
         with pytest.raises(ValueError, match="Text cannot be empty"):
             analyzer.analyze("")
     
+    @patch.dict('os.environ', {'DEBUG': 'false'})
     @patch('src.services.analyzer.LLMService')
     def test_analyze_llm_failure(self, mock_llm_service):
         mock_llm_instance = Mock()
@@ -46,6 +49,7 @@ class TestTextAnalyzer:
         with pytest.raises(RuntimeError, match="Analysis failed"):
             analyzer.analyze("Test text")
     
+    @patch.dict('os.environ', {'DEBUG': 'false'})
     @patch('src.services.analyzer.LLMService')
     def test_extract_keywords(self, mock_llm_service):
         analyzer = TextAnalyzer()

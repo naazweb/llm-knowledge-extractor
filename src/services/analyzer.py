@@ -1,11 +1,16 @@
+import os
 import nltk
 from collections import Counter
 from src.services.llm import LLMService
+from .mock_llm import MockLLMService
 
 class TextAnalyzer:
     def __init__(self):
-        self.llm_service = LLMService()
-        self._download_nltk_data()
+        if os.getenv("DEBUG", "false").lower() == "true":
+            self.llm_service = MockLLMService()
+        else:
+            self.llm_service = LLMService()
+            self._download_nltk_data()
     
     def _download_nltk_data(self):
         try:
