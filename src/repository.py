@@ -23,7 +23,8 @@ class AnalysisRepository:
     
     def search_by_topic(self, topic: str) -> list[Analysis]:
         return self.db.query(Analysis).filter(
-            Analysis.topics.contains(topic)
+            (Analysis.topics.contains(topic)) |
+            (Analysis.keywords.contains(topic))
         ).all()
     
     def to_model(self, analysis: Analysis) -> AnalysisResult:

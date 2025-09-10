@@ -32,6 +32,9 @@ def analyze_text(input_data: TextInput, db: Session = Depends(get_db)):
 
 @app.get("/search")
 def search_analyses(topic: str, db: Session = Depends(get_db)):
+    if not topic.strip():
+        raise HTTPException(status_code=400, detail="Topic parameter cannot be empty")
+    
     repo = AnalysisRepository(db)
-    analyses = repo.search_by_topic(topic)
+    analyses = repo.search_by_topic(topic.strip())
     return [repo.to_model(analysis) for analysis in analyses]
